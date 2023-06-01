@@ -9,12 +9,13 @@ spec:
     - matrix:
         generators:
           - matrix:
-              - clusters: {}
-              - git:
-                  repoURL: https://gitlab.com/siderolabs/powerflex-argocd-poc.git
-                  revision: HEAD
-                  files:
-                    - path: cluster_types/{{ index .metadata.labels "type" }}.yaml
+              generators:
+                - clusters: {}
+                - git:
+                    repoURL: https://github.com/siderolabs/powerflex-argocd-poc.git
+                    revision: HEAD
+                    files:
+                      - path: cluster_types/{{ index .metadata.labels "type" }}.yaml
           - list:
               elements: []
               elementsYaml: '{{ .applications | toJson }}'
