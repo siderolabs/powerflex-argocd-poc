@@ -1,0 +1,43 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: powerflex
+  namespace: argocd
+spec:
+  goTemplate: true
+  generators:
+    - matrix:
+        generators:
+          - merge:
+              - list:
+                  elements:
+              - git:
+                  repoURL: https://gitlab.com/siderolabs/powerflex-argocd-poc.git
+                  revision: HEAD
+                  files:
+                    - path: cluster_types/type.yaml
+          - list:
+              elements: []
+              elementsYaml: '{{ .applications | toJson }}'
+  template:
+    metadata:
+      name: '{{ .name }}'
+    spec:
+      project: '{{ .project | default "default" }}'
+      source:
+        repoURL: '{{ .repoURL | default "https://github.com/siderolabs/powerflex-argocd-poc.git" }}'
+        targetRevision: '{{ .version | default "HEAD" }}'
+        path: '{{ .path | default "" }}'
+      destination:
+        server: '{{ .server | default "https://kubernetes.default.svc" }}'
+        namespace: '{{ .namespace | default .name }}'
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        retry:
+          limit: 5
+          backoff:
+            duration: 30s
+            factor: 2
+            maxDuration: 5m
