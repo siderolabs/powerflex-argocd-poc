@@ -8,14 +8,13 @@ spec:
   generators:
     - matrix:
         generators:
-          - merge:
-              - list:
-                  elements:
+          - matrix:
+              - clusters: {}
               - git:
                   repoURL: https://gitlab.com/siderolabs/powerflex-argocd-poc.git
                   revision: HEAD
                   files:
-                    - path: cluster_types/type.yaml
+                    - path: cluster_types/{{ index .metadata.labels "type" }}.yaml
           - list:
               elements: []
               elementsYaml: '{{ .applications | toJson }}'
@@ -27,7 +26,7 @@ spec:
       source:
         repoURL: '{{ .repoURL | default "https://github.com/siderolabs/powerflex-argocd-poc.git" }}'
         targetRevision: '{{ .version | default "HEAD" }}'
-        path: '{{ .path | default "" }}'
+        path: '{{ .path | default (printf "applications/%s" .name) }}'
       destination:
         server: '{{ .server | default "https://kubernetes.default.svc" }}'
         namespace: '{{ .namespace | default .name }}'

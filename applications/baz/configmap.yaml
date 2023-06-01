@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: baz
+  namespace: baz
+data:
+  app: baz
+  description: |-
+    This is an example of an extremely simple raw-manifest application
