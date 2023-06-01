@@ -1,0 +1,20 @@
+kind: Cluster
+name: powerflex-argocd-poc
+kubernetes:
+  version: v1.27.2
+talos:
+  version: v1.4.4
+patches:
+  - name: install-disk
+    file: patches/install-disk.yaml
+  - name: single-node
+    file: patches/single-node.yaml
+  - name: argocd
+    file: patches/argocd.yaml
+---
+kind: ControlPlane
+machines:
+  - 147ceb6a-ab01-49e6-9af8-a522c92a4fd0
+---
+kind: Workers
+machines: []
