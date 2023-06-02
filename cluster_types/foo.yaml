@@ -1,3 +1,2 @@
 applications:
-  - name: argocd
-  - name: baz
+  - app: baz

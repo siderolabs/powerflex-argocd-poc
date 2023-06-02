@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Secret
 metadata:
-  name: powerflex-self
+  name: in-cluster
   namespace: argocd
   labels:
     argocd.argoproj.io/secret-type: cluster

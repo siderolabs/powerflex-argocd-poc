@@ -10,7 +10,11 @@ spec:
         generators:
           - matrix:
               generators:
-                - clusters: {}
+                - clusters:
+                    selector:
+                      matchExpressions:
+                        - key: type
+                          operator: Exists
                 - git:
                     repoURL: https://github.com/siderolabs/powerflex-argocd-poc.git
                     revision: HEAD
@@ -21,16 +25,16 @@ spec:
               elementsYaml: '{{ .applications | toJson }}'
   template:
     metadata:
-      name: '{{ .name }}'
+      name: '{{ .app }}'
     spec:
       project: '{{ .project | default "default" }}'
       source:
         repoURL: '{{ .repoURL | default "https://github.com/siderolabs/powerflex-argocd-poc.git" }}'
         targetRevision: '{{ .version | default "HEAD" }}'
-        path: '{{ .path | default (printf "applications/%s" .name) }}'
+        path: '{{ .dir | default (printf "applications/%s" .name) }}'
       destination:
         server: '{{ .server | default "https://kubernetes.default.svc" }}'
-        namespace: '{{ .namespace | default .name }}'
+        namespace: '{{ .namespace | default .app }}'
       syncPolicy:
         automated:
           prune: true
