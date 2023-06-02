@@ -1,0 +1,11 @@
+piVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "bar.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "bar.labels" . | nindent 4 }}
+data:
+  app: bar
+  description: |-
+    This is an example of an extremely simple helm application

@@ -31,7 +31,7 @@ spec:
       source:
         repoURL: '{{ .repoURL | default "https://github.com/siderolabs/powerflex-argocd-poc.git" }}'
         targetRevision: '{{ .version | default "HEAD" }}'
-        path: '{{ .dir | default (printf "applications/%s" .name) }}'
+        path: '{{ .dir | default (printf "applications/%s" .app) }}'
       destination:
         server: '{{ .server | default "https://kubernetes.default.svc" }}'
         namespace: '{{ .namespace | default .app }}'
